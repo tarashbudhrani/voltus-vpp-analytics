@@ -1,0 +1,14 @@
+pandas
+numpy
+pyarrow
+faker
+sqlalchemy
+requests
+flask
+streamlit
+plotly
+python-dotenv
+pytz
+pytest
+openpyxl
+tabulate

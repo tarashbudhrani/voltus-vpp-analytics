@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+
+# Environment & secrets
+.env
+
+# Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Generated at runtime (recreated by run_pipeline.py)
+data/raw/
+data/processed/
+db/voltus_internal.db
+
+# Keep EIA cache so pipeline works without an API key
+!data/eia_cache/
+!data/eia_cache/**
