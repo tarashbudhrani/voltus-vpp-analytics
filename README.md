@@ -187,21 +187,7 @@ The dashboard does **not** update automatically. After changing data or re-runni
 
 ---
 
-## Deploy on Streamlit Community Cloud
 
-1. Push this repo to GitHub (see below).
-2. Go to [share.streamlit.io](https://share.streamlit.io) and connect the repo.
-3. Set **Main file path**: `dashboard/streamlit_app.py`
-4. Add `EIA_API_KEY` in Secrets only if you need live EIA pulls.
-
-**Note:** Streamlit Cloud cannot run `run_pipeline.py` on every page load. Either:
-
-- Commit pre-built `data/processed/` parquet files (remove those paths from `.gitignore` before pushing), **or**
-- Add a CI step that runs the pipeline and commits artifacts.
-
-For a portfolio demo, committing processed outputs (~few MB) is the simplest path.
-
----
 
 ## Project structure
 
@@ -245,32 +231,7 @@ Production-style SQL lives in `sql/` for Redash or any SQLite client. See [`sql/
 
 ---
 
-## Push to GitHub
 
-From the project root:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: Voltus residential VPP analytics pipeline"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/voltus-vpp-analytics.git
-git push -u origin main
-```
-
-`.gitignore` excludes the virtual environment, secrets (`.env`), and generated `data/raw/`, `data/processed/`, and the SQLite DB. Anyone cloning the repo runs `python run_pipeline.py` once to regenerate them.
-
-To ship a **ready-to-view dashboard** on Streamlit Cloud without requiring visitors to run the pipeline, temporarily allow processed data in git:
-
-```bash
-# Edit .gitignore — comment out data/processed/ — then:
-python run_pipeline.py
-git add data/processed/
-git commit -m "Add processed dashboard artifacts"
-git push
-```
-
----
 
 ## Tech stack
 
