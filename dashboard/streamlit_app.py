@@ -50,27 +50,50 @@ st.set_page_config(
 )
 
 
+REQUIRED_PROCESSED_FILES = {
+    "enrollment": "enrollment_clean.parquet",
+    "customers": "db_customers_clean.parquet",
+    "enrollments": "db_enrollments_clean.parquet",
+    "partners": "db_partners_clean.parquet",
+    "programs": "db_programs_clean.parquet",
+    "dr_events": "db_dr_events_clean.parquet",
+    "devices": "devices_clean.parquet",
+    "intervals": "interval_clean.parquet",
+    "cbl": "cbl_performance.parquet",
+    "eia": "eia_demand_clean.parquet",
+    "master": "vpp_master.parquet",
+}
+
+
 @st.cache_data
 def load_all_data() -> dict[str, pd.DataFrame]:
-    files = {
-        "enrollment": "enrollment_clean.parquet",
-        "customers": "db_customers_clean.parquet",
-        "enrollments": "db_enrollments_clean.parquet",
-        "partners": "db_partners_clean.parquet",
-        "programs": "db_programs_clean.parquet",
-        "dr_events": "db_dr_events_clean.parquet",
-        "devices": "devices_clean.parquet",
-        "intervals": "interval_clean.parquet",
-        "cbl": "cbl_performance.parquet",
-        "eia": "eia_demand_clean.parquet",
-        "master": "vpp_master.parquet",
-    }
     data: dict[str, pd.DataFrame] = {}
-    for key, filename in files.items():
+    for key, filename in REQUIRED_PROCESSED_FILES.items():
         path = PROCESSED / filename
         if path.exists():
             data[key] = pd.read_parquet(path)
     return data
+
+
+def ensure_processed_data(data: dict[str, pd.DataFrame]) -> None:
+    missing = [
+        filename
+        for key, filename in REQUIRED_PROCESSED_FILES.items()
+        if key not in data
+    ]
+    if not missing:
+        return
+
+    st.error("Dashboard data files are missing.")
+    st.markdown(
+        "This app reads pre-built parquet files from `data/processed/`. "
+        "They are not present in this deployment."
+    )
+    st.code("python run_pipeline.py", language="bash")
+    st.markdown("Missing files:")
+    for filename in missing:
+        st.markdown(f"- `{filename}`")
+    st.stop()
 
 
 def parse_dates(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
@@ -729,6 +752,7 @@ def tab_settlement(cbl: pd.DataFrame, programs: pd.DataFrame, enrollment: pd.Dat
 
 def main() -> None:
     data = load_all_data()
+    ensure_processed_data(data)
 
     enrollment = parse_dates(data["enrollment"], ["enrollment_date", "opt_out_date"])
     master = parse_dates(data["master"], ["enrolled_date"])

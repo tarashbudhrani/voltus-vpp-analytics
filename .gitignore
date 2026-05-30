@@ -26,8 +26,10 @@ htmlcov/
 
 # Generated at runtime (recreated by run_pipeline.py)
 data/raw/
-data/processed/
 db/voltus_internal.db
+
+# Processed parquet files are committed for Streamlit Cloud deployment.
+# Re-run `python run_pipeline.py` locally to refresh, then commit updates.
 
 # Keep EIA cache so pipeline works without an API key
 !data/eia_cache/
