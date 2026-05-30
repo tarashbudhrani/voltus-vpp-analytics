@@ -124,41 +124,7 @@ An EIA API key is **not required** for first run — cached grid data ships in `
 
 Get a free key: [https://www.eia.gov/opendata/register.php](https://www.eia.gov/opendata/register.php)
 
-### 5. Build the dataset
 
-```bash
-python run_pipeline.py
-```
-
-You should see eight steps complete and a message like:
-
-```text
-Pipeline complete in ~45 seconds.
-Run: streamlit run dashboard/streamlit_app.py
-```
-
-This creates:
-
-- `data/processed/*.parquet` — cleaned, joined analytics tables
-- `db/voltus_internal.db` — operational SQLite database
-
-### 6. Launch the dashboard
-
-```bash
-streamlit run dashboard/streamlit_app.py
-```
-
-Open the URL shown in the terminal (usually **http://localhost:8501**).
-
-### 7. Run tests (optional)
-
-```bash
-pytest tests/ -v
-```
-
-Tests validate join integrity and data quality rules. Run them **after** the pipeline.
-
----
 
 ## Dashboard
 
@@ -178,14 +144,6 @@ The Streamlit app is the primary way to explore results. Five tabs mirror the bu
 - **Partner**, **enrollment date range**
 - Filters persist across tabs via session state
 
-### Refreshing data
-
-The dashboard does **not** update automatically. After changing data or re-running the pipeline:
-
-1. Run `python run_pipeline.py`
-2. Refresh the browser (press **R** in Streamlit, or restart the app)
-
----
 
 
 
@@ -225,11 +183,6 @@ voltus-vpp-analytics/
 
 ---
 
-## SQL analytics
-
-Production-style SQL lives in `sql/` for Redash or any SQLite client. See [`sql/README.md`](sql/README.md) for table prerequisites and query catalog.
-
----
 
 
 
